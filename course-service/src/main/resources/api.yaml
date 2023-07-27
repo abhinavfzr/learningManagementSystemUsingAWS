@@ -1,0 +1,179 @@
+swagger: "2.0"
+info:
+  title: Swagger LMS Courses - OpenAPI 3.0
+  version: "1.0"
+tags:
+  - name: courses
+    description: Everything about your Courses
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /api/v1.0/lms/courses/add/{coursename}:
+    post:
+      tags:
+        - courses
+      summary: Add a new Course to the store
+      description: Add a new Course to the store
+      operationId: addCourse
+      parameters:
+        - name: authToken
+          in: query
+          required: true
+          type: string
+        - name: coursename
+          in: path
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "Course object that needs to be added "
+          required: true
+          schema:
+            $ref: "#/definitions/Course"
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: string
+        '500':
+          description: Internal Server Error
+        '403':
+          description: 'You do not have necessary permissions for the resource'
+
+  /api/v1.0/lms/courses/getall:
+    get:
+      tags:
+        - courses
+      summary: Finds Courses
+      operationId: getAllCourses
+      parameters:
+        - name: authToken
+          in: query
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Course'
+        '400':
+          description: Invalid status value
+
+  /api/v1.0/lms/courses/delete/{coursename}:
+    delete:
+      tags:
+        - courses
+      summary: Deletes a Course
+      description: delete a Course
+      operationId: deleteCourse
+      parameters:
+        - name: authToken
+          in: query
+          required: true
+          type: string
+        - name: coursename
+          in: path
+          description: Course id to delete
+          required: true
+          type: string
+      responses:
+        '400':
+          description: Invalid Course value
+        '200':
+          description: Successful operation
+          schema:
+            type: string
+
+  /api/v1.0/lms/courses/get/{technology}/{durationFromRange}/{durationToRange}:
+    get:
+      tags:
+        - courses
+      summary: Deletes a Course
+      description: delete a Course
+      operationId: getCoursesDurationandTechnology
+      parameters:
+        - name: authToken
+          in: query
+          required: true
+          type: string
+        - name: technology
+          in: path
+          description: Course id to delete
+          required: true
+          type: string
+        - name: durationFromRange
+          in: path
+          description: Course id to delete
+          required: true
+          type: integer
+        - name: durationToRange
+          in: path
+          description: Course id to delete
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '400':
+          description: Invalid Course value
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Course'
+
+  /api/v1.0/lms/courses/info/{technology}:
+    get:
+      tags:
+        - courses
+      summary: Deletes a course
+      description: get a course
+      operationId: getCoursesInfo
+      parameters:
+        - name: authToken
+          in: query
+          required: true
+          type: string
+        - name: technology
+          in: path
+          description: tech id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '400':
+          description: Invalid course value
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Course'
+
+
+
+
+definitions:
+  Course:
+    type: "object"
+    properties:
+      id:
+        type: string
+      courseName:
+        type: string
+      courseDuration:
+        type: integer
+      courseDescription:
+        type: string
+      courseTechnology:
+        type: string
+      launchUrl:
+        type: string
+

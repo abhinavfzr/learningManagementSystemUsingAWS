@@ -1,0 +1,53 @@
+version: '2'
+
+services:
+
+  mongo:
+    image: mongo:3.4-jessie
+    ports:
+      - 27017:27017
+    expose:
+      - 27017
+    container_name: mongonew
+    network_mode: host
+
+  db:
+    image: mysql:5.7
+    restart: always
+    container_name: mysqlnew
+    network_mode: "host"
+    hostname: localhost
+    volumes:
+      - '/mysql-volume:/var/lib/mysql'
+    environment:
+      MYSQL_DATABASE: jwt
+      # So you don't have to use root, but you can if you like
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - 3306:3306
+
+  zuul-apigateway:
+    build: zuul-api/
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    ports:
+      - 8080:8080
+
+  course-service:
+    build: course-service/
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    ports:
+      - 8081:8081
+
+  user-service:
+    build: user-service/
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    ports:
+      - 8082:8082
